@@ -131,6 +131,9 @@ python label_studio/manage.py collectstatic
 python label_studio/manage.py runserver
 ```
 
+### After making changes, create a build before pushing to git.
+
+
 ### Deploy in a cloud instance
 
 You can deploy Label Studio with one click in Heroku, Microsoft Azure, or Google Cloud Platform: 
