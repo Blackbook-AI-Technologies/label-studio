@@ -40,7 +40,7 @@ class ProjectViewMixin(models.Model):
         abstract = True
 
 # TODO: temporary fix: future maybe we can add them in frontend or just add them in DB
-project_with_fix_first_ordering_key=[5,6,7]
+projects_with_fixed_first_ordering_key=[5,6,7]
 class View(ViewBaseModel, ProjectViewMixin):
     def get_prepare_tasks_params(self, add_selected_items=False):
         # convert filters to PrepareParams structure
