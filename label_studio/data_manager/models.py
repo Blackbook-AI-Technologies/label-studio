@@ -39,7 +39,8 @@ class ProjectViewMixin(models.Model):
     class Meta:
         abstract = True
 
-
+# TODO: temporary fix: future maybe we can add them in frontend or just add them in DB
+project_with_fix_first_ordering_key=[5,6,7]
 class View(ViewBaseModel, ProjectViewMixin):
     def get_prepare_tasks_params(self, add_selected_items=False):
         # convert filters to PrepareParams structure
@@ -60,6 +61,11 @@ class View(ViewBaseModel, ProjectViewMixin):
         ordering = self.ordering
         if not ordering:
             ordering = []  # default empty json field is dict, but we need list
+        
+        print("self.project_id.",self.project_id)
+        if self.project_id in project_with_fix_first_ordering_key:
+            ordering.insert(0, "tasks:data.Conversation id")  
+        
 
         selected_items = None
         if add_selected_items and self.selected_items:
