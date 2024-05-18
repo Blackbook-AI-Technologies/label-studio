@@ -63,7 +63,7 @@ class View(ViewBaseModel, ProjectViewMixin):
             ordering = []  # default empty json field is dict, but we need list
         
         print("self.project_id.",self.project_id)
-        if self.project_id in project_with_fix_first_ordering_key:
+        if self.project_id in projects_with_fixed_first_ordering_key:
             ordering.insert(0, "tasks:data.Conversation id")  
         
 
