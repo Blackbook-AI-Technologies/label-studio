@@ -22,9 +22,26 @@ import "./DataManager.styl";
 const DEFAULT_TOOLBAR =
   "actions columns filters ordering label-button loading-possum error-box | refresh import-button export-button view-toggle";
 
+  const getToolbar = (currentUser) => {
+    let toolbar = DEFAULT_TOOLBAR;
+    
+    if (!currentUser?.is_staff) {
+      toolbar = toolbar.replace("filters", "");
+      toolbar = toolbar.replace("import-button", "");
+      toolbar = toolbar.replace("export-button", ""); 
+    }
+  
+    return toolbar;
+  }
 
-const getToolbar = (currentUser) => {
-  return currentUser?.is_staff ? DEFAULT_TOOLBAR : DEFAULT_TOOLBAR.replace("filters", "");
+const getTabActions = (currentUser) => {
+  const is_staff=!!currentUser?.is_staff;
+  return  {
+    "add": is_staff,
+    "delete": is_staff,
+    "edit": is_staff,
+    "duplicate": is_staff
+  }
 }  
 const initializeDataManager = async (root, props, params) => {
   if (!window.LabelStudio) throw Error("Label Studio Frontend doesn't exist on the page");
@@ -98,6 +115,7 @@ export const DataManagerPage = ({ ...props }) => {
         root.current,
         {
           toolbar: getToolbar(currentUser),
+          tabControls: getTabActions(currentUser),
           ...props
         },
         {
@@ -228,10 +246,13 @@ DataManagerPage.context = ({ dmRef }) => {
   const location = useFixedLocation();
   const { project } = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
+  const { user:currentUser }=useCurrentUser();
 
   const links = {
-    "/settings": "Settings",
   };
+  if(currentUser?.is_staff){
+    links["/settings/labeling"] = "Settings";
+  }
 
   const updateCrumbs = (currentMode) => {
     const isExplorer = currentMode === "explorer";
