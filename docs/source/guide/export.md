@@ -3,11 +3,11 @@ title: Export annotations and data from Label Studio
 short: Export annotations
 type: guide
 tier: all
-order: 270
-order_enterprise: 170
+order: 166
+order_enterprise: 166
 meta_title: Export Annotations
 meta_description: Label Studio documentation for exporting data labeling annotations to use in machine learning models and data science projects.
-section: "Import and Export"
+section: "Import & Export"
 
 ---
 
@@ -47,12 +47,12 @@ If the export times out, see how to [export snapshots using the SDK](https://lab
 Use the following command to export data and annotations.
 
 ```shell
-label-studio export <project-id> <export-format> --path=<output-path>
+label-studio export <project-id> <export-format> --export-path=<output-path>
 ```
 
 To enable logs: 
 ```shell
-DEBUG=1 LOG_LEVEL=DEBUG label-studio export <project-id> <export-format> --path=<output-path>
+DEBUG=1 LOG_LEVEL=DEBUG label-studio export <project-id> <export-format> --export-path=<output-path>
 ```
 
 </div>

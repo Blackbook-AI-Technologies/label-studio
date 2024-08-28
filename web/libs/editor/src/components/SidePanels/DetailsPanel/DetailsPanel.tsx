@@ -12,6 +12,8 @@ import { Relations as RelationsComponent } from "./Relations";
 // eslint-disable-next-line
 // @ts-ignore
 import { DraftPanel } from "../../DraftPanel/DraftPanel";
+import { RelationsControls } from "./RelationsControls";
+
 interface DetailsPanelProps extends PanelProps {
   regions: any;
   selection: any;
@@ -71,7 +73,10 @@ const RelationsTab: FC<any> = inject("store")(
       <>
         <Block name="relations">
           <Elem name="section-tab">
-            <Elem name="section-head">Relations ({relationStore.size})</Elem>
+            <Elem name="view-control">
+              <Elem name="section-head">Relations ({relationStore.size})</Elem>
+              <RelationsControls relationStore={relationStore} />
+            </Elem>
             <Elem name="section-content">
               <RelationsComponent relationStore={relationStore} />
             </Elem>
@@ -146,7 +151,10 @@ const GeneralPanel: FC<any> = inject("store")(
           </Elem>
         )}
         <Elem name="section">
-          <Elem name="section-head">Relations ({relationStore.size})</Elem>
+          <Elem name="view-control">
+            <Elem name="section-head">Relations ({relationStore.size})</Elem>
+            <RelationsControls relationStore={relationStore} />
+          </Elem>
           <Elem name="section-content">
             <RelationsComponent relationStore={relationStore} />
           </Elem>
@@ -184,9 +192,9 @@ const SelectedRegion: FC<{ region: any }> = observer(({ region }) => {
   return <RegionItem region={region} mainDetails={RegionDetailsMain} metaDetails={RegionDetailsMeta} />;
 });
 
-export const Comments = observer(CommentsTab);
-export const History = observer(HistoryTab);
-export const Relations = observer(RelationsTab);
-export const Info = observer(InfoTab);
+export const Comments = CommentsTab;
+export const History = HistoryTab;
+export const Relations = RelationsTab;
+export const Info = InfoTab;
 export const Details = observer(DetailsComponent);
 export const DetailsPanel = observer(DetailsPanelComponent);

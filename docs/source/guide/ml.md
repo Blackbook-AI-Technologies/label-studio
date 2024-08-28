@@ -3,11 +3,11 @@ title: Integrate Label Studio into your machine learning pipeline
 short: Machine learning integration
 type: guide
 tier: all
-order: 355
-order_enterprise: 305
+order: 251
+order_enterprise: 251
 meta_title: Integrate Label Studio into your machine learning pipeline
 meta_description: Machine learning frameworks for integrating your model development pipeline seamlessly with your data labeling workflow.
-section: "Machine learning"
+section: "Machine Learning"
 ---
 
 You can use an ML backend to integrate your model development pipeline with your data labeling workflow. There are several use cases, including: 
@@ -109,7 +109,7 @@ Click **Connect Model** and complete the following fields:
 | **Interactive preannotations**  | Enable this option to allow the model to assist with the labeling process by providing real-time predictions or suggestions as annotators work on tasks.  <br /><br />In other words, as you interact with data (for example, by drawing a region on an image, highlighting text, or asking an LLM a question), the ML backend receives this input and returns predictions based on it. For more information, see [Interactive pre-annotations](#Interactive-pre-annotations) below. |
 
 !!! info Tip
-    You can also [add an ML backend using the API](/api/#operation/api_ml_create). You will need the project ID and the machine learning backend URL. 
+    You can also [add an ML backend using the API](https://api.labelstud.io/api-reference/api-reference/ml/create). You will need the project ID and the machine learning backend URL. 
 
 ## Example models
 
@@ -172,20 +172,35 @@ from label_studio_tools.core.utils.io import get_local_path
 class MLBackend(LabelStudioMLBase)
   def predict(tasks):
     task = tasks[0]
-    locaL_path = get_local_path(task['data']['image'], task_id=task['id'])
-    with open(locaL_path, 'r') as f:
+    local_path = get_local_path(task['data']['image'], task_id=task['id'])
+    with open(local_path, 'r') as f:
       f.read()
 ```
 
 The `get_local_path()` function resolves URIs to URLs, then downloads and caches the file.
 
-For this to work, you must specify the `LABEL_STUDIO_URL` and `LABEL_STUDIO_API_KEY` environment variables for your ML backend before using `get_local_path`. 
+For this to work, you must specify the `LABEL_STUDIO_URL` and `LABEL_STUDIO_API_KEY` environment variables for your ML backend before using `get_local_path`. If you are using docker-compose.yml, these variables have to be added to the environment section. For example:
+
+```yaml
+services:
+  ml-backend-1:
+    container_name: ml-backend-1
+    ...
+    environment:
+      # Specify the Label Studio URL and API key to access
+      # uploaded, local storage and cloud storage files.
+      # Do not use 'localhost' as it does not work within Docker containers.
+      # Use prefix 'http://' or 'https://' for the URL always.
+      # Determine the actual IP using 'ifconfig' (Linux/Mac) or 'ipconfig' (Windows).
+      - LABEL_STUDIO_URL=http://192.168.42.42:8080/  # replace with your IP! 
+      - LABEL_STUDIO_API_KEY=<your-label-studio-api-key>
+```
 
 Note the following:
 
 * `LABEL_STUDIO_URL` must be accessible from the ML backend instance. 
 
-* If you are running the ML backend in Docker, `LABEL_STUDIO_URL` can’t contain `localhost`. Use the full IP address instead. You can get this using the `ifconfig` (Unix) or `ipconfig` (Windows) commands.
+* If you are running the ML backend in Docker, `LABEL_STUDIO_URL` can’t contain `localhost` or `0.0.0.0`. Use the full IP address instead, e.g. `192.168.42.42`. You can get this using the `ifconfig` (Unix) or `ipconfig` (Windows) commands.
 
 * `LABEL_STUDIO_URL` must start either with `http://` or `https://`.
 
@@ -285,7 +300,7 @@ After you start labeling, enable **Auto-Annotation** to see and use the smart op
    
 For image labeling, after you enable auto-annotation you can choose whether to **Auto accept annotation suggestions**. If you automatically accept annotation suggestions, regions show up automatically and are immediately created. If you don't automatically accept suggestions, the regions appear but you can reject or approve them manually, either individually or all at once.
 
-<br/><img src="/images/release-130/predict-owl-region.gif" alt="" class="gif-border" width="800px" height="533px" />
+<br/><img src="/images/predict-owl-region.gif" alt="" class="gif-border" width="800px" height="533px" />
    
 ### Delete predictions 
 
